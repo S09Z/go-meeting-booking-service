@@ -50,6 +50,10 @@ type Claims struct {
 
 func main() {
 	e := echo.New()
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hello, World!")
+	})
+	e.Logger.Fatal(e.Start(":9090"))
 
 	// Initialize Redis
 	redisClient := redis.NewClient(&redis.Options{
@@ -60,7 +64,7 @@ func main() {
 	defer redisClient.Close()
 
 	// Initialize GORM
-	dsn := "host=localhost user=postgres password=mysecretpassword dbname=booking_webservice port=5432 sslmode=disable TimeZone=Asia/Bangkok"
+	dsn := "host=localhost user=root password=password dbname=booking_webservice port=5432 sslmode=disable TimeZone=Asia/Bangkok"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
